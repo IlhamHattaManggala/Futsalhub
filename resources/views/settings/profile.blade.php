@@ -1,0 +1,168 @@
+@extends('layouts.app')
+
+@section('title', 'Pengaturan Profile')
+@section('header_title', 'Pengaturan Akun Profile')
+
+@section('content')
+<div class="w-full">
+    <div class="card-white p-4 sm:p-6 md:p-8 rounded-3xl space-y-6 shadow-sm border border-slate-100">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+            <div>
+                <h3 class="text-lg font-bold text-slate-900"><i class="fa-solid fa-user-gear text-emerald-600 mr-2"></i>Informasi Profile</h3>
+                <p class="text-xs text-slate-550 mt-1">Perbarui nama lengkap, email, atau ganti kata sandi login Anda</p>
+            </div>
+        </div>
+
+        <form action="{{ route('settings.profile.update') }}" method="POST" enctype="multipart/form-data" class="space-y-5 pt-2">
+            @csrf
+            @method('PUT')
+
+            <!-- Avatar Upload Row -->
+            <div class="flex flex-col sm:flex-row items-center gap-5 pb-4 border-b border-slate-100">
+                <div class="relative">
+                    <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-slate-200 shadow-sm bg-slate-50 flex items-center justify-center shrink-0">
+                        @if($user->avatar && file_exists(public_path($user->avatar)))
+                            <img id="avatarPreview" src="{{ asset($user->avatar) }}" class="w-full h-full object-cover" alt="Preview Avatar">
+                        @else
+                            <div id="avatarInitials" class="w-full h-full bg-gradient-to-tr from-emerald-500/10 to-teal-500/10 text-emerald-700 text-3xl font-extrabold flex items-center justify-center">
+                                {{ substr($user->name, 0, 1) }}
+                            </div>
+                            <img id="avatarPreview" src="#" class="w-full h-full object-cover hidden" alt="Preview Avatar">
+                        @endif
+                    </div>
+                </div>
+                <div class="space-y-1.5 text-center sm:text-left">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Foto Profil</label>
+                    <input type="file" name="avatar" id="avatarInput" accept="image/*" class="hidden">
+                    <div class="flex items-center justify-center sm:justify-start gap-2">
+                        <button type="button" onclick="document.getElementById('avatarInput').click()" 
+                            class="px-4 py-2 bg-slate-50 border border-slate-200 hover:bg-slate-100 text-slate-700 rounded-xl text-xs font-bold transition-all shadow-sm flex items-center gap-1.5">
+                            <i class="fa-solid fa-cloud-arrow-up text-emerald-600"></i> Pilih Foto
+                        </button>
+                    </div>
+                    <p class="text-[10px] text-slate-450">Format: JPG, JPEG, PNG, WEBP. Maksimal 2MB.</p>
+                    @error('avatar')
+                        <span class="text-red-500 text-[10px] font-bold block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                <input type="text" name="name" value="{{ old('name', $user->name) }}" required
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white text-sm transition-all font-bold">
+                @error('name')
+                    <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Alamat Email</label>
+                <input type="email" name="email" value="{{ old('email', $user->email) }}" required
+                    class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:bg-white text-sm transition-all font-bold">
+                @error('email')
+                    <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <div class="pt-4 border-t border-slate-100">
+                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wider mb-1">Ganti Password (Opsional)</h4>
+                <p class="text-[10px] text-slate-450 mb-4 font-medium">Kosongkan kolom password di bawah jika Anda tidak ingin mengganti password</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Password Baru</label>
+                        <input type="password" name="password" placeholder="Minimal 6 karakter"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-405 focus:outline-none focus:border-emerald-500 focus:bg-white text-sm transition-all font-bold">
+                        @error('password')
+                            <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">Konfirmasi Password Baru</label>
+                        <input type="password" name="password_confirmation" placeholder="Ulangi password baru"
+                            class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-405 focus:outline-none focus:border-emerald-500 focus:bg-white text-sm transition-all font-bold">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-4 border-t border-slate-100 flex justify-end">
+                <button type="submit" 
+                    class="px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center gap-1.5">
+                    <i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Profile
+                </button>
+            </div>
+        </form>
+
+        @if($user->isManagement())
+            <div class="pt-6 border-t border-red-100 mt-6 space-y-4">
+                <div class="bg-red-50/50 border border-red-150 rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div class="space-y-1">
+                        <h4 class="text-sm font-bold text-red-700 flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Tutup Akun Manager
+                        </h4>
+                        <p class="text-xs text-slate-500 leading-relaxed max-w-xl">
+                            Menonaktifkan dan mengunci akun manager ini secara permanen. Seluruh data tim, laporan kas, agenda latihan, dan statistik pemain akan tetap dipertahankan untuk kebutuhan operasional klub, namun Anda tidak akan bisa login kembali.
+                        </p>
+                    </div>
+                    <button type="button" onclick="confirmCloseAccount()"
+                        class="px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white font-bold text-xs rounded-xl uppercase tracking-wider transition-colors shrink-0 shadow-sm flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-slash"></i> Tutup Akun
+                    </button>
+                </div>
+            </div>
+
+            <!-- Form for Closing Account -->
+            <form id="closeAccountForm" action="{{ route('settings.profile.close') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+        @endif
+    </div>
+</div>
+@endsection
+
+@section('scripts')
+<script>
+    document.getElementById('avatarInput').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.getElementById('avatarPreview');
+                const initials = document.getElementById('avatarInitials');
+                
+                preview.src = event.target.result;
+                preview.classList.remove('hidden');
+                
+                if (initials) {
+                    initials.classList.add('hidden');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    function confirmCloseAccount() {
+        Swal.fire({
+            title: 'Tutup Akun Manager?',
+            text: 'Apakah Anda yakin ingin menutup akun ini? Akun Anda akan dikunci dan dinonaktifkan secara permanen. Seluruh data tim Anda tetap tersimpan di database.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#ef4444',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Ya, Tutup Akun!',
+            cancelButtonText: 'Batal',
+            customClass: {
+                popup: 'rounded-3xl',
+                confirmButton: 'rounded-xl',
+                cancelButton: 'rounded-xl'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('closeAccountForm').submit();
+            }
+        });
+    }
+</script>
+@endsection

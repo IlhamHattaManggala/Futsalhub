@@ -1,0 +1,58 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Outfit', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+
+    --color-brand-50: #f0fdf4;
+    --color-brand-100: #dcfce7;
+    --color-brand-500: #10b981;
+    --color-brand-600: #059669;
+    --color-brand-700: #047857;
+    --color-brand-950: #022c22;
+}
+
+body {
+    background-color: #f8fafc;
+    color: #334155;
+    font-family: 'Outfit', sans-serif;
+}
+.sidebar-white {
+    background: #ffffff;
+    border-right: 1px solid #f1f5f9;
+    box-shadow: 4px 0 20px -5px rgba(15, 23, 42, 0.03), 1px 0 0 0 #f1f5f9;
+}
+.header-white {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+}
+.card-white {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+.card-white-hover:hover {
+    border-color: rgba(16, 185, 129, 0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.02);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(16, 185, 129, 0.5);
+}

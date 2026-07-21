@@ -179,7 +179,7 @@
                 class="absolute inset-0 bg-gradient-to-r from-emerald-500/[0.01] to-teal-500/[0.01] opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             </div>
             <div class="relative shrink-0">
-                @if(Auth::user()->avatar && file_exists(public_path(Auth::user()->avatar)))
+                @if(Auth::user()->avatar)
                     <img src="{{ asset(Auth::user()->avatar) }}"
                         class="w-8 h-8 rounded-full object-cover border border-slate-200 shadow-sm" alt="Avatar">
                 @else

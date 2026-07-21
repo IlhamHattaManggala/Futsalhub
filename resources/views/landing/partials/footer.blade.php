@@ -94,12 +94,24 @@
         <!-- Divider -->
         <div class="border-t border-slate-800/80 my-10"></div>
 
-        <!-- Bottom Row: License, Security & Badges -->
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-slate-500">
-            <div class="text-center sm:text-left">
+        <!-- Bottom Row: Credit, License, Security & Badges -->
+        <div class="flex flex-col lg:flex-row items-center justify-between gap-6 text-xs font-medium text-slate-500">
+            <!-- Left: University Logo & Researcher Credit -->
+            <div class="flex items-center gap-3 order-1">
+                <img src="{{ asset(\App\Models\Setting::get('university_logo', 'images/Logo Universitas Harkat Negeri.webp')) }}" class="w-10 h-10 object-contain rounded-lg bg-white p-1 shadow-md" alt="Logo Universitas">
+                <div class="text-left leading-tight">
+                    <p class="font-semibold text-slate-300">{{ \App\Models\Setting::get('researcher_name', 'Ilham Hatta Manggala') }}</p>
+                    <p>Peneliti &amp; Developer</p>
+                </div>
+            </div>
+
+            <!-- Center: Copyright -->
+            <div class="text-center order-2">
                 &copy; 2026 {{ \App\Models\Setting::get('web_name', 'FutsalHub') }}. Hak Cipta Dilindungi.
             </div>
-            <div class="flex flex-wrap items-center justify-center gap-6">
+
+            <!-- Right: Links & Security Badge -->
+            <div class="flex flex-wrap items-center justify-center gap-6 order-3">
                 <a href="{{ route('privacy') }}" class="hover:text-slate-350 transition-colors">Kebijakan Privasi</a>
                 <a href="{{ route('terms') }}" class="hover:text-slate-350 transition-colors">Syarat & Ketentuan</a>
                 <span class="flex items-center gap-1.5 text-slate-500 select-none">

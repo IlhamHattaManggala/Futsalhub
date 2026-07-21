@@ -22,7 +22,7 @@
             <div class="flex flex-col sm:flex-row items-center gap-5 pb-4 border-b border-slate-100">
                 <div class="relative">
                     <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-slate-200 shadow-sm bg-slate-50 flex items-center justify-center shrink-0">
-                        @if($user->avatar && file_exists(public_path($user->avatar)))
+                        @if($user->avatar)
                             <img id="avatarPreview" src="{{ asset($user->avatar) }}" class="w-full h-full object-cover" alt="Preview Avatar">
                         @else
                             <div id="avatarInitials" class="w-full h-full bg-gradient-to-tr from-emerald-500/10 to-teal-500/10 text-emerald-700 text-3xl font-extrabold flex items-center justify-center">

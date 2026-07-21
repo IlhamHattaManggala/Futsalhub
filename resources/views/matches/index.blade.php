@@ -68,9 +68,9 @@
                         }
                     }
                 @endphp
-                <div class="card-white p-6 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-4 card-white-hover transition-all duration-300">
+                <div class="card-white p-4 sm:p-6 rounded-3xl flex flex-col md:flex-row items-center justify-between gap-4 card-white-hover transition-all duration-300">
                     <!-- Left: Match Core Info -->
-                    <div class="flex items-center gap-4 flex-1">
+                    <div class="flex items-center gap-4 flex-1 w-full">
                         <!-- Outcome status badge -->
                         <span class="w-20 text-center px-2 py-1 text-[10px] font-bold border rounded-md uppercase tracking-wider shrink-0 {{ $outcomeClass }}">
                             {{ $outcomeText }}
@@ -88,7 +88,7 @@
                     </div>
 
                     <!-- Middle: Scores Display -->
-                    <div class="flex items-center justify-center gap-6 px-6 py-2 bg-slate-50 rounded-2xl border border-slate-200 min-w-[140px] text-center">
+                    <div class="flex items-center justify-center gap-6 px-6 py-2 bg-slate-50 rounded-2xl border border-slate-200 w-full md:w-auto min-w-[140px] text-center">
                         @if($isFinished)
                             <span class="text-2xl font-extrabold text-slate-900">{{ $m->score_team }}</span>
                             <span class="text-xs text-slate-400 font-extrabold">VS</span>
@@ -103,12 +103,12 @@
                         @if(Auth::user()->isCoach() && $isFinished)
                             @if(Auth::user()->team && Auth::user()->team->isPremium())
                                 <a href="{{ route('matches.stats', $m->id) }}" 
-                                    class="px-3.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/10">
+                                    class="w-full justify-center md:w-auto px-3.5 py-2 bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 shadow-md shadow-emerald-600/10">
                                     <i class="fa-solid fa-file-invoice"></i> Input Stat Skuad
                                 </a>
                             @else
                                 <span title="Fitur statistik performa hanya tersedia untuk paket Premium"
-                                    class="inline-flex px-3.5 py-2 bg-slate-100 border border-slate-200 text-slate-400 text-xs font-bold rounded-xl items-center gap-1.5 cursor-not-allowed select-none">
+                                    class="w-full justify-center md:w-auto inline-flex px-3.5 py-2 bg-slate-100 border border-slate-200 text-slate-400 text-xs font-bold rounded-xl items-center gap-1.5 cursor-not-allowed select-none">
                                     <i class="fa-solid fa-lock text-[10px]"></i> Stat Skuad (Premium)
                                 </span>
                             @endif

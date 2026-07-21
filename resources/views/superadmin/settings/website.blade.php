@@ -110,6 +110,47 @@
             </div>
         </div>
 
+        <!-- SECTION 2B: Kredit Peneliti & Institusi -->
+        <div class="card-white p-8 rounded-3xl space-y-6 shadow-sm border border-slate-100">
+            <div class="pb-4 border-b border-slate-100 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg shadow-inner">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <div>
+                    <h3 class="text-base font-bold text-slate-900">Kredit Peneliti & Institusi</h3>
+                    <p class="text-[11px] text-slate-500 mt-0.5">Logo universitas dan nama peneliti/developer yang ditampilkan pada footer website</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- University Logo Upload -->
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Logo Universitas</label>
+                    <div class="flex items-center gap-4 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
+                        <img src="{{ asset($settings['university_logo']) }}" class="w-16 h-16 object-contain bg-white rounded-xl border border-slate-200 p-1" alt="Logo Universitas">
+                        <div class="flex-1">
+                            <input type="file" name="university_logo" accept="image/*"
+                                class="w-full text-xs text-slate-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-[10px] file:font-black file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 file:cursor-pointer">
+                            <span class="block text-[9px] text-slate-400 mt-1 leading-normal">PNG, JPG, JPEG, WEBP, atau JFIF. Maks 2MB.</span>
+                        </div>
+                    </div>
+                    @error('university_logo')
+                        <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <!-- Researcher Name -->
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Nama Peneliti & Developer</label>
+                    <input type="text" name="researcher_name" value="{{ old('researcher_name', $settings['researcher_name']) }}" placeholder="Nama lengkap peneliti"
+                        class="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-900 placeholder-slate-400 focus:outline-none focus:border-red-500 focus:bg-white text-sm transition-all font-bold h-[52px]">
+                    @error('researcher_name')
+                        <span class="text-red-500 text-[10px] font-bold mt-1 block">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+        </div>
+
         <!-- SECTION 3: Integrasi TriPay Gateway -->
         <div class="card-white p-8 rounded-3xl space-y-6 shadow-sm border border-slate-100">
             <div class="pb-4 border-b border-slate-100 flex items-center justify-between">

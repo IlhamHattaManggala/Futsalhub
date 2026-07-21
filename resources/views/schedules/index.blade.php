@@ -19,7 +19,7 @@
                     $badgeClass = $isMatch ? 'bg-red-50 text-red-600 border-red-100' : 'bg-blue-50 text-blue-600 border-blue-100';
                     $hasPassed = $s->start_time->isPast();
                 @endphp
-                <div class="card-white p-6 rounded-3xl border {{ $hasPassed ? 'opacity-60' : '' }} flex flex-col md:flex-row justify-between items-start md:items-center gap-4 card-white-hover">
+                <div class="card-white p-4 sm:p-6 rounded-3xl border {{ $hasPassed ? 'opacity-60' : '' }} flex flex-col md:flex-row justify-between items-start md:items-center gap-4 card-white-hover">
                     <!-- Left: Date Widget -->
                     <div class="flex gap-4 items-center w-full md:w-auto">
                         <div class="text-center px-3 py-2 rounded-2xl bg-slate-100 border border-slate-200 flex flex-col justify-center min-w-[65px] h-[65px]">
@@ -120,19 +120,19 @@
                     </div>
 
                     <!-- Right: Action Buttons -->
-                    <div class="w-full md:w-auto flex md:flex-col gap-2 justify-end">
-                        @if(Auth::user()->isCoach())
-                            <a href="{{ route('schedules.attendance', $s->id) }}" 
-                                class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm font-bold">
-                                <i class="fa-solid fa-clipboard-user"></i> Absensi
-                            </a>
-                             <button type="button" onclick="showQrAttendance('{{ URL::signedRoute('schedules.scan', ['slug' => (Auth::user()->isSuperAdmin() ? 'superadmin' : Auth::user()->slug), 'id' => $s->id]) }}', '{{ $s->title }}')"
-                                class="px-4 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
-                                <i class="fa-solid fa-qrcode text-emerald-600"></i> QR Absensi
-                            </button>
-                        @endif
-                        
-                        @if(Auth::user()->isCoach() || Auth::user()->isManagement())
+                    @if(Auth::user()->isCoach() || Auth::user()->isManagement())
+                        <div class="w-full md:w-auto grid grid-cols-2 sm:flex sm:flex-wrap md:flex-col gap-2 pt-3 md:pt-0 border-t border-slate-100 md:border-t-0 justify-end shrink-0">
+                            @if(Auth::user()->isCoach())
+                                <a href="{{ route('schedules.attendance', $s->id) }}" 
+                                    class="w-full sm:w-auto px-3.5 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-clipboard-user"></i> Absensi
+                                </a>
+                                <button type="button" onclick="showQrAttendance('{{ URL::signedRoute('schedules.scan', ['slug' => (Auth::user()->isSuperAdmin() ? 'superadmin' : Auth::user()->slug), 'id' => $s->id]) }}', '{{ $s->title }}')"
+                                    class="w-full sm:w-auto px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                    <i class="fa-solid fa-qrcode text-emerald-600"></i> QR Absensi
+                                </button>
+                            @endif
+                            
                             @php
                                 $waText = "🔊 *AGENDA TIM BARU* 🔊\n\n"
                                         . "*Kegiatan:* " . $s->title . "\n"
@@ -150,24 +150,24 @@
                                 $waUrl = "https://api.whatsapp.com/send?text=" . urlencode($waText);
                             @endphp
                             <a href="{{ $waUrl }}" target="_blank" 
-                                class="px-4 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 border border-emerald-250 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                class="w-full sm:w-auto px-3.5 py-2 bg-emerald-50 text-emerald-700 hover:bg-emerald-100 hover:text-emerald-800 border border-emerald-250 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                 <i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> Bagikan WA
                             </a>
 
                             <a href="{{ route('schedules.edit', $s->id) }}" 
-                                class="px-4 py-2 bg-slate-100 hover:bg-slate-250 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                                class="w-full sm:w-auto px-3.5 py-2 bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-sm">
                                 <i class="fa-solid fa-pen-to-square"></i> Edit Agenda
                             </a>
                             
-                            <form action="{{ route('schedules.destroy', $s->id) }}" method="POST" class="confirm-delete" data-message="Apakah Anda yakin ingin menghapus jadwal agenda &quot;{{ $s->title }}&quot; ini? Semua data absensi dan bukti transfer iuran terkait juga akan terhapus secara permanen.">
+                            <form action="{{ route('schedules.destroy', $s->id) }}" method="POST" class="confirm-delete w-full sm:w-auto col-span-2 sm:col-span-1" data-message="Apakah Anda yakin ingin menghapus jadwal agenda &quot;{{ $s->title }}&quot; ini? Semua data absensi dan bukti transfer iuran terkait juga akan terhapus secara permanen.">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="w-full px-4 py-2 bg-red-50 hover:bg-red-100 border border-red-150 text-red-650 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
+                                <button type="submit" class="w-full h-full px-3.5 py-2 bg-red-50 hover:bg-red-100 border border-red-150 text-red-650 rounded-xl text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5">
                                     <i class="fa-solid fa-trash-can"></i> Hapus
                                 </button>
                             </form>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 </div>
             @empty
                 <div class="card-white p-12 text-center rounded-3xl text-slate-500">

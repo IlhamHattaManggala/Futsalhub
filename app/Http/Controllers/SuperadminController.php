@@ -381,6 +381,8 @@ class SuperadminController extends Controller
             'tripay_mode' => \App\Models\Setting::get('tripay_mode', 'sandbox'),
             'maintenance_mode' => \App\Models\Setting::get('maintenance_mode', '0') === '1',
             'platform_fee' => \App\Models\Setting::get('platform_fee', '5000'),
+            'university_logo' => \App\Models\Setting::get('university_logo', 'images/Logo Universitas Harkat Negeri.webp'),
+            'researcher_name' => \App\Models\Setting::get('researcher_name', 'Ilham Hatta Manggala'),
         ];
         return view('superadmin.settings.website', compact('settings'));
     }
@@ -399,6 +401,8 @@ class SuperadminController extends Controller
             'tripay_mode' => 'required|string|in:sandbox,production',
             'web_logo' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg,avif,jfif,ico|max:2048',
             'web_favicon' => 'nullable|file|mimes:ico,png,jpg,jpeg,webp,svg,avif,gif|max:1024',
+            'researcher_name' => 'required|string|max:255',
+            'university_logo' => 'nullable|file|mimes:png,jpg,jpeg,webp,svg,avif,jfif|max:2048',
         ]);
 
         // Save text settings
@@ -418,6 +422,9 @@ class SuperadminController extends Controller
 
         // Save switch checkboxes
         \App\Models\Setting::set('maintenance_mode', $request->has('maintenance_mode') ? '1' : '0');
+
+        // Save researcher/developer credit
+        \App\Models\Setting::set('researcher_name', $request->researcher_name);
 
         // Handle Web Logo Upload (save to Google Drive under Logos folder)
         if ($request->hasFile('web_logo')) {
@@ -474,6 +481,30 @@ class SuperadminController extends Controller
             // Upload to Google Drive
             \Illuminate\Support\Facades\Storage::disk('google')->putFileAs('Logos', $faviconFile, $faviconName);
             \App\Models\Setting::set('web_favicon', 'images/Logos/' . $faviconName);
+        }
+
+        // Handle University Logo Upload (save to Google Drive under Logos folder)
+        if ($request->hasFile('university_logo')) {
+            $uniLogoFile = $request->file('university_logo');
+            $uniLogoName = 'university_logo_' . time() . '.' . $uniLogoFile->getClientOriginalExtension();
+
+            // Delete old university logo (only if it's a previously uploaded one, not the seeded default)
+            $oldUniLogo = \App\Models\Setting::get('university_logo');
+            if ($oldUniLogo && $oldUniLogo !== 'images/Logo Universitas Harkat Negeri.webp') {
+                $googleOldPath = str_replace('images/', '', $oldUniLogo);
+                if (\Illuminate\Support\Facades\Storage::disk('google')->exists($googleOldPath)) {
+                    \Illuminate\Support\Facades\Storage::disk('google')->delete($googleOldPath);
+                }
+
+                $localPath = public_path($oldUniLogo);
+                if (file_exists($localPath) && is_file($localPath)) {
+                    @unlink($localPath);
+                }
+            }
+
+            // Upload to Google Drive
+            \Illuminate\Support\Facades\Storage::disk('google')->putFileAs('Logos', $uniLogoFile, $uniLogoName);
+            \App\Models\Setting::set('university_logo', 'images/Logos/' . $uniLogoName);
         }
 
         return back()->with('success', 'Pengaturan Website & Integrasi TriPay berhasil diperbarui!');

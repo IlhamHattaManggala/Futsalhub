@@ -14,7 +14,7 @@ class FinanceSeeder extends Seeder
     public function run(): void
     {
         // Fetch Teams
-        $team1 = Team::where('name', 'FC Antigravity')->first();
+        $team1 = Team::where('name', 'PH Futsal Academy')->first();
         $team2 = Team::where('name', 'Galaxy Futsal')->first();
 
         // ==========================================

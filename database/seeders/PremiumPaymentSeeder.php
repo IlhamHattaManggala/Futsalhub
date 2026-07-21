@@ -15,12 +15,12 @@ class PremiumPaymentSeeder extends Seeder
     public function run(): void
     {
         // Fetch Teams
-        $team1 = Team::where('name', 'FC Antigravity')->first();
+        $team1 = Team::where('name', 'PH Futsal Academy')->first();
         $team2 = Team::where('name', 'Galaxy Futsal')->first();
 
         // Fetch Managers
-        $manager1 = User::where('email', 'manager1@futsal.com')->first();
-        $manager2 = User::where('email', 'manager2@futsal.com')->first();
+        $manager1 = User::where('email', 'achmadsyafiudin@gmail.com')->first() ?: User::whereHas('role', function($q) { $q->where('name', 'management'); })->first();
+        $manager2 = User::where('email', 'didejulioarando@gmail.com')->first() ?: User::whereHas('role', function($q) { $q->where('name', 'management'); })->first();
 
         // Transaction 1: Success / Paid (Team 1)
         if ($team1 && $manager1) {

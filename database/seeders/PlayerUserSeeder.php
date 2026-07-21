@@ -16,54 +16,44 @@ class PlayerUserSeeder extends Seeder
     public function run(): void
     {
         $playerRole = Role::where('name', 'player')->first();
-        $team1 = Team::where('name', 'FC Antigravity')->first();
-        $team2 = Team::where('name', 'Galaxy Futsal')->first();
+        $team = Team::where('name', 'PH Futsal Academy')->first() ?: Team::first();
 
-        if ($playerRole) {
-            // ==========================================
-            // TEAM 1 PLAYER USERS
-            // ==========================================
-            if ($team1) {
-                $playersData1 = [
-                    ['name' => 'Rian Maulana', 'email' => 'player1@futsal.com'],
-                    ['name' => 'Fikri Hidayat', 'email' => 'player2@futsal.com'],
-                    ['name' => 'Aris Budiman', 'email' => 'player3@futsal.com'],
-                    ['name' => 'Doni Siregar', 'email' => 'player4@futsal.com'],
-                    ['name' => 'Taufik Hidayat', 'email' => 'player5@futsal.com'],
-                ];
+        if ($playerRole && $team) {
+            $players = [
+                'Bintang Fajar Satria Muda',
+                'Muhammad Labib Arkaan',
+                'Mikyal Kautsar Aprilio',
+                'Irfan Qoshidul Haq',
+                'Ibnu Arsa Mutawa',
+                'M. Nezfan Maulana Nady',
+                'Revli Yandi Arslan',
+                'Revano Farras Kurniawan',
+                'Muhammad Rafa Maulana',
+                'Bangkit Indra Kusuma',
+                'Muhammad Tanjung Mahira',
+                'Muhammad Syafiq',
+                'Caesar Shofa Arhan Maulana',
+                'Ivander Wahyu Pratama',
+                'Haidar Rahman',
+                'Muhammad Daffa Ardeansah',
+                'Afgan Dwi Pangestu',
+                'Candra Abrar Nugraha',
+                'Faza Narendra Kuswanto',
+                'Nayzar Daffa Maulana',
+            ];
 
-                foreach ($playersData1 as $p) {
-                    User::create([
-                        'name' => $p['name'],
-                        'email' => $p['email'],
+            foreach ($players as $name) {
+                $email = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $name)) . '@gmail.com';
+
+                User::updateOrCreate(
+                    ['email' => $email],
+                    [
+                        'name' => $name,
                         'password' => Hash::make('password'),
                         'role_id' => $playerRole->id,
-                        'team_id' => $team1->id,
-                    ]);
-                }
-            }
-
-            // ==========================================
-            // TEAM 2 PLAYER USERS
-            // ==========================================
-            if ($team2) {
-                $playersData2 = [
-                    ['name' => 'Rendi Saputra', 'email' => 'player2_1@futsal.com'],
-                    ['name' => 'Yoga Pratama', 'email' => 'player2_2@futsal.com'],
-                    ['name' => 'Galih Permana', 'email' => 'player2_3@futsal.com'],
-                    ['name' => 'Sandi Yudha', 'email' => 'player2_4@futsal.com'],
-                    ['name' => 'Imron Rosadi', 'email' => 'player2_5@futsal.com'],
-                ];
-
-                foreach ($playersData2 as $p) {
-                    User::create([
-                        'name' => $p['name'],
-                        'email' => $p['email'],
-                        'password' => Hash::make('password'),
-                        'role_id' => $playerRole->id,
-                        'team_id' => $team2->id,
-                    ]);
-                }
+                        'team_id' => $team->id,
+                    ]
+                );
             }
         }
     }

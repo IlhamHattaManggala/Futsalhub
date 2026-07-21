@@ -12,24 +12,24 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        Role::create([
-            'name' => 'superadmin',
-            'description' => 'Super Administrator Platform'
-        ]);
+        Role::updateOrCreate(
+            ['name' => 'superadmin'],
+            ['description' => 'Super Administrator Platform']
+        );
 
-        Role::create([
-            'name' => 'management',
-            'description' => 'Manajemen Tim / Pemilik Klub'
-        ]);
+        Role::updateOrCreate(
+            ['name' => 'management'],
+            ['description' => 'Manajemen Tim / Pemilik Klub']
+        );
 
-        Role::create([
-            'name' => 'coach',
-            'description' => 'Pelatih / Staf Taktis'
-        ]);
+        Role::updateOrCreate(
+            ['name' => 'coach'],
+            ['description' => 'Pelatih / Staf Taktis']
+        );
 
-        Role::create([
-            'name' => 'player',
-            'description' => 'Pemain Tim Futsal'
-        ]);
+        Role::updateOrCreate(
+            ['name' => 'player'],
+            ['description' => 'Pemain Tim Futsal']
+        );
     }
 }

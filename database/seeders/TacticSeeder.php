@@ -15,10 +15,10 @@ class TacticSeeder extends Seeder
     public function run(): void
     {
         // Fetch Team 1
-        $team1 = Team::where('name', 'FC Antigravity')->first();
+        $team1 = Team::where('name', 'PH Futsal Academy')->first();
 
         // Fetch Coach
-        $coach1 = User::where('email', 'coach1@futsal.com')->first();
+        $coach1 = User::where('email', 'nicoprayogo@gmail.com')->first() ?: User::whereHas('role', function($q) { $q->where('name', 'coach'); })->first();
 
         if ($team1 && $coach1) {
             Tactic::create([

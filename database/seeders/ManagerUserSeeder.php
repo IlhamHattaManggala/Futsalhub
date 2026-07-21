@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Player;
 use App\Models\Role;
 use App\Models\Team;
 use App\Models\User;
@@ -16,28 +17,37 @@ class ManagerUserSeeder extends Seeder
     public function run(): void
     {
         $managementRole = Role::where('name', 'management')->first();
-        $team1 = Team::where('name', 'FC Antigravity')->first();
-        $team2 = Team::where('name', 'Galaxy Futsal')->first();
+        $team = Team::where('name', 'PH Futsal Academy')->first() ?: Team::first();
 
-        if ($managementRole) {
-            if ($team1) {
-                User::create([
-                    'name' => 'Hendra Manager',
-                    'email' => 'manager1@futsal.com',
-                    'password' => Hash::make('password'),
-                    'role_id' => $managementRole->id,
-                    'team_id' => $team1->id,
-                ]);
-            }
+        if ($managementRole && $team) {
+            $managersData = [
+                ['name' => 'Achmad Syafiudin', 'position' => 'Manajer', 'number' => 90],
+                ['name' => 'Dide Julio Arando', 'position' => 'Official', 'number' => 91],
+                ['name' => 'Yuda Indra Saputra', 'position' => 'Official', 'number' => 92],
+            ];
 
-            if ($team2) {
-                User::create([
-                    'name' => 'Boni Manager',
-                    'email' => 'manager2@futsal.com',
-                    'password' => Hash::make('password'),
-                    'role_id' => $managementRole->id,
-                    'team_id' => $team2->id,
-                ]);
+            foreach ($managersData as $m) {
+                $email = strtolower(preg_replace('/[^a-zA-Z0-9]/', '', $m['name'])) . '@gmail.com';
+
+                $user = User::updateOrCreate(
+                    ['email' => $email],
+                    [
+                        'name' => $m['name'],
+                        'password' => Hash::make('password'),
+                        'role_id' => $managementRole->id,
+                        'team_id' => $team->id,
+                    ]
+                );
+
+                Player::updateOrCreate(
+                    ['user_id' => $user->id],
+                    [
+                        'team_id' => $team->id,
+                        'name' => $m['name'],
+                        'number' => $m['number'],
+                        'position' => $m['position'],
+                    ]
+                );
             }
         }
     }

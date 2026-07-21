@@ -17,13 +17,15 @@ class SuperadminUserSeeder extends Seeder
         $superadminRole = Role::where('name', 'superadmin')->first();
 
         if ($superadminRole) {
-            User::create([
-                'name' => 'Superadmin Global',
-                'email' => 'superadmin@futsal.com',
-                'password' => Hash::make('password'),
-                'role_id' => $superadminRole->id,
-                'team_id' => null,
-            ]);
+            User::updateOrCreate(
+                ['email' => 'superadmin@futsal.com'],
+                [
+                    'name' => 'Superadmin Global',
+                    'password' => Hash::make('password'),
+                    'role_id' => $superadminRole->id,
+                    'team_id' => null,
+                ]
+            );
         }
     }
 }

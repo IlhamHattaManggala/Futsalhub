@@ -15,12 +15,12 @@ class AnnouncementSeeder extends Seeder
     public function run(): void
     {
         // Fetch Teams
-        $team1 = Team::where('name', 'FC Antigravity')->first();
+        $team1 = Team::where('name', 'PH Futsal Academy')->first();
         $team2 = Team::where('name', 'Galaxy Futsal')->first();
 
         // Fetch Managers
-        $manager1 = User::where('email', 'manager1@futsal.com')->first();
-        $manager2 = User::where('email', 'manager2@futsal.com')->first();
+        $manager1 = User::where('email', 'achmadsyafiudin@gmail.com')->first() ?: User::whereHas('role', function($q) { $q->where('name', 'management'); })->first();
+        $manager2 = User::where('email', 'didejulioarando@gmail.com')->first() ?: User::whereHas('role', function($q) { $q->where('name', 'management'); })->first();
 
         // ==========================================
         // TEAM 1 ANNOUNCEMENT
@@ -30,7 +30,7 @@ class AnnouncementSeeder extends Seeder
                 'team_id' => $team1->id,
                 'user_id' => $manager1->id,
                 'title' => 'Pengumuman Iuran Kas Bulan Mei',
-                'content' => 'Halo rekan-rekan FC Antigravity, diharapkan untuk segera melunasi iuran bulanan kas tim sebesar Rp 50.000 paling lambat akhir minggu ini melalui Bendahara/Manager. Uang akan digunakan untuk pendaftaran turnamen lokal bulan depan. Terima kasih!',
+                'content' => 'Halo rekan-rekan PH Futsal Academy, diharapkan untuk segera melunasi iuran bulanan kas tim sebesar Rp 50.000 paling lambat akhir minggu ini melalui Bendahara/Manager. Uang akan digunakan untuk pendaftaran turnamen lokal bulan depan. Terima kasih!',
             ]);
         }
 

@@ -17,7 +17,7 @@ class MatchSeeder extends Seeder
     public function run(): void
     {
         // Fetch Team 1
-        $team1 = Team::where('name', 'FC Antigravity')->first();
+        $team1 = Team::where('name', 'PH Futsal Academy')->first();
 
         if ($team1) {
             // Create finished match
@@ -34,20 +34,20 @@ class MatchSeeder extends Seeder
 
             // Fetch players by email from their users relationship
             $player1 = Player::whereHas('user', function ($q) {
-                $q->where('email', 'player1@futsal.com');
-            })->first();
+                $q->where('email', 'bintangfajarsatriamuda@gmail.com');
+            })->first() ?: Player::skip(0)->first();
 
             $player2 = Player::whereHas('user', function ($q) {
-                $q->where('email', 'player2@futsal.com');
-            })->first();
+                $q->where('email', 'muhammadlabibarkaan@gmail.com');
+            })->first() ?: Player::skip(1)->first();
 
             $player3 = Player::whereHas('user', function ($q) {
-                $q->where('email', 'player3@futsal.com');
-            })->first();
+                $q->where('email', 'mikyalkautsaraprilio@gmail.com');
+            })->first() ?: Player::skip(2)->first();
 
             $player4 = Player::whereHas('user', function ($q) {
-                $q->where('email', 'player4@futsal.com');
-            })->first();
+                $q->where('email', 'irfanqoshidulhaq@gmail.com');
+            })->first() ?: Player::skip(3)->first();
 
             // Stats for Match 1
             if ($player1) {

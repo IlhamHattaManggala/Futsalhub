@@ -1,4 +1,4 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🏆 FutsalHub — Sistem Informasi Manajemen Tim Futsal Multi-Tenant SaaS
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
@@ -7,31 +7,69 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## 📌 Pengenalan FutsalHub
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+**FutsalHub** adalah platform manajemen tim futsal berbasis web yang dibangun dengan arsitektur **Software as a Service (SaaS) Multi-Tenant**. Ini memungkinkan berbagai tim futsal untuk menggunakan satu sistem secara bersamaan dengan data yang terisolasi. FutsalHub bertujuan menggantikan proses manajemen tim futsal manual yang tidak efisien (misalnya grup WhatsApp, spreadsheet) dengan satu aplikasi terpusat yang mudah diakses kapan saja dan di mana saja.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Fitur Utama
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+*   **Multi-Tenancy SaaS Ringan:** Setiap tim mendapatkan lingkungan data yang terisolasi dengan URL unik (`/v1/{slug}`).
+*   **Papan Taktik Interaktif:** Pelatih dapat merancang skema formasi di lapangan futsal 2D menggunakan fitur drag-and-drop dan drawing tools. Taktik disimpan sebagai JSON.
+*   **Otomatisasi Absensi & Iuran Terpadu:** Memungkinkan pencatatan kehadiran pemain dan verifikasi pembayaran iuran kegiatan dalam satu alur kerja yang efisien.
+*   **Manajemen Roster Tim:** Kelola pemain dan pelatih, termasuk pendaftaran anggota baru dan pembuatan akun otomatis.
+*   **Statistik & Leaderboard Real-Time:** Otomatis merangkum statistik performa individu pemain (gol, assist, dll.) dan menampilkannya di leaderboard.
+*   **Modul Kas Keuangan:** Pencatatan transparan pemasukan dan pengeluaran tim.
+*   **Integrasi TriPay Payment Gateway:** Memproses upgrade paket tim ke Premium secara otomatis via QRIS atau Virtual Account dengan sistem callback webhook.
 
-## Learning Laravel
+## 👥 Sistem Peran (Role-Based Access Control)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+FutsalHub menerapkan empat peran utama untuk mengelola akses dan fungsionalitas:
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Role          | Deskripsi                                                                 |
+| :------------ | :------------------------------------------------------------------------ |
+| **Superadmin**    | Mengelola seluruh platform secara global: tim, pengguna, dan transaksi premium.   |
+| **Management** | Manajer/pemilik tim, mengelola roster, keuangan, dan agenda tim.           |
+| **Coach**     | Pelatih, fokus pada taktik, statistik pertandingan, dan jadwal tim.          |
+| **Player**    | Pemain, akses informasi tim (read-only), konfirmasi absensi, dan unggah bukti bayar. |
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠️ Tech Stack
 
-## Agentic Development
+*   **Backend:** Laravel 13 (PHP Framework)
+*   **Frontend:** Blade Template + Tailwind CSS + Vanilla JS
+*   **Database:** MySQL
+*   **Payment Gateway:** TriPay (QRIS & Virtual Account)
+*   **Fitur Tambahan:** PWA (Progressive Web App), Web Push Notification, Google OAuth Login, Chart.js
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+## 🚀 Memulai Proyek
+
+1.  Clone repository ini:
+    ```bash
+    git clone https://github.com/IlhamHattaManggala/Laravel-Futsal.git
+    cd Laravel-Futsal
+    ```
+2.  Install dependensi Composer:
+    ```bash
+    composer install
+    ```
+3.  Salin file konfigurasi `.env` dan buat app key:
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+4.  Konfigurasi database di file `.env` Anda.
+5.  Jalankan migrasi database:
+    ```bash
+    php artisan migrate --seed
+    ```
+6.  Jalankan aplikasi:
+    ```bash
+    php artisan serve
+    ```
+    Aplikasi akan tersedia di `http://127.0.0.1:8000`.
+
+### Agentic Development
+
+FutsalHub, dibangun dengan Laravel, sangat cocok untuk pengembangan dengan bantuan AI. Instal [Laravel Boost](https://laravel.com/docs/ai) untuk mempercepat alur kerja AI Anda:
 
 ```bash
 composer require laravel/boost --dev
@@ -39,20 +77,20 @@ composer require laravel/boost --dev
 php artisan boost:install
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+Boost menyediakan lebih dari 15 alat dan keterampilan yang membantu agen AI membangun aplikasi Laravel sesuai praktik terbaik.
 
-## Contributing
+## 🤝 Kontribusi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Terima kasih atas pertimbangan Anda untuk berkontribusi pada kerangka kerja Laravel! Panduan kontribusi dapat ditemukan di [dokumentasi Laravel](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## 📄 Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Untuk memastikan komunitas Laravel menyambut semua orang, harap tinjau dan patuhi [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## 🔒 Kerentanan Keamanan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Jika Anda menemukan kerentanan keamanan dalam Laravel, harap kirim email ke Taylor Otwell melalui [taylor@laravel.com](mailto:taylor@laravel.com). Semua kerentanan keamanan akan segera ditangani.
 
-## License
+## 📜 Lisensi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Kerangka kerja Laravel adalah perangkat lunak sumber terbuka yang dilisensikan di bawah [lisensi MIT](https://opensource.org/licenses/MIT).

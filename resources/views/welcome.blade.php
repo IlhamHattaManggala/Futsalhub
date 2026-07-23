@@ -70,6 +70,56 @@
                     .catch(err => console.error('PWA Service Worker registration failed.', err));
             });
         }
+
+        // PWA Installation handling
+        document.addEventListener('DOMContentLoaded', () => {
+            let deferredPrompt;
+            const installBtn = document.getElementById('pwa-install-btn');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent automatic display of prompt
+                e.preventDefault();
+                // Store the event for triggering later
+                deferredPrompt = e;
+                // Show the install button in UI
+                if (installBtn) {
+                    installBtn.classList.remove('hidden');
+                }
+            });
+
+            if (installBtn) {
+                installBtn.addEventListener('click', () => {
+                    if (deferredPrompt) {
+                        // Display PWA install prompt
+                        deferredPrompt.prompt();
+                        deferredPrompt.userChoice.then((choiceResult) => {
+                            if (choiceResult.outcome === 'accepted') {
+                                console.log('PWA installation accepted by user');
+                                installBtn.classList.add('hidden');
+                            } else {
+                                console.log('PWA installation dismissed by user');
+                            }
+                            deferredPrompt = null;
+                        });
+                    }
+                });
+            }
+
+            // Hide button if PWA is successfully installed
+            window.addEventListener('appinstalled', () => {
+                console.log('PWA successfully installed');
+                if (installBtn) {
+                    installBtn.classList.add('hidden');
+                }
+            });
+
+            // Hide button if already running in standalone/installed mode
+            if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone) {
+                if (installBtn) {
+                    installBtn.classList.add('hidden');
+                }
+            }
+        });
     </script>
 </head>
 <body class="antialiased hero-gradient">

@@ -201,9 +201,9 @@
     <!-- ========================================== -->
     <!-- COACH & MANAGEMENT VIEW: CREATE & TRACK TASKS -->
     <!-- ========================================== -->
-    <div class="grid grid-cols-1 xl:grid-cols-12 gap-8 items-start">
-        <!-- Left Column: Tasks List & Track Progress -->
-        <div class="xl:col-span-8 space-y-6">
+    <div class="grid grid-cols-1 @if(Auth::user()->isCoach()) xl:grid-cols-12 @endif gap-8 items-start">
+        <!-- Left/Full Column: Tasks List & Track Progress -->
+        <div class="@if(Auth::user()->isCoach()) xl:col-span-8 @endif space-y-6">
             <h4 class="text-sm font-black text-slate-450 uppercase tracking-widest">Daftar Penugasan Tim</h4>
 
             <div class="space-y-4">
@@ -234,6 +234,7 @@
                                 </div>
                                 <h4 class="text-base font-bold text-slate-900 mt-1">{{ $t->title }}</h4>
                             </div>
+                            @if(Auth::user()->isCoach())
                             <!-- Delete action -->
                             <form action="{{ route('tasks.destroy', $t->id) }}" method="POST" class="confirm-delete" data-message="Apakah Anda yakin ingin menghapus tugas &quot;{{ $t->title }}&quot; ini? Seluruh data progres pemain dan berkas foto bukti terkait akan dihapus permanen.">
                                 @csrf
@@ -242,6 +243,7 @@
                                     <i class="fa-solid fa-trash-can text-sm"></i>
                                 </button>
                             </form>
+                            @endif
                         </div>
 
                         <!-- Description & Due Date -->
@@ -353,6 +355,7 @@
             </div>
         </div>
 
+        @if(Auth::user()->isCoach())
         <!-- Right Column: Create New Task Form -->
         <div class="xl:col-span-4">
             <div class="card-white p-6 rounded-3xl space-y-4">
@@ -437,6 +440,7 @@
                 </form>
             </div>
         </div>
+        @endif
     </div>
 @endif
 @endsection

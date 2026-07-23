@@ -313,4 +313,44 @@ class PlayerTaskTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHasErrors('due_date');
     }
+
+    public function test_manager_cannot_create_or_delete_tasks()
+    {
+        $managerUser = User::create([
+            'name' => 'Manager Hendra',
+            'email' => 'manager_test@test.com',
+            'password' => bcrypt('password'),
+            'role_id' => $this->managementRole->id,
+            'team_id' => $this->team->id,
+            'slug' => 'manager-hendra'
+        ]);
+
+        // Attempt to create a task as manager
+        $response = $this->actingAs($managerUser)
+            ->post('/v1/manager-hendra/tasks', [
+                'title' => 'Tugas Baru',
+                'task_category_id' => $this->category->id,
+                'due_date' => now()->addDay()->format('Y-m-d H:i:s'),
+                'assign_type' => 'all'
+            ]);
+
+        $response->assertRedirect();
+        $response->assertSessionHas('error', 'Hanya Pelatih yang dapat membuat tugas.');
+
+        // Create a task as coach first
+        $task = Task::create([
+            'team_id' => $this->team->id,
+            'coach_id' => $this->coachUser->id,
+            'task_category_id' => $this->category->id,
+            'title' => 'Tugas Coach',
+            'due_date' => now()->addDay(),
+        ]);
+
+        // Attempt to delete it as manager
+        $response = $this->actingAs($managerUser)
+            ->delete("/v1/manager-hendra/tasks/{$task->id}");
+
+        $response->assertRedirect();
+        $response->assertSessionHas('error', 'Hanya Pelatih yang dapat menghapus tugas.');
+    }
 }

@@ -109,6 +109,10 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
+// Account Reactivation Routes
+Route::post('/account/reactivate/send', [AuthController::class, 'sendReactivationEmail'])->name('account.reactivate.send');
+Route::get('/account/reactivate/{id}', [AuthController::class, 'reactivateAccount'])->name('account.reactivate')->middleware('signed');
+
 // Google OAuth routes
 Route::get('/auth/google/redirect', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google.redirect');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);

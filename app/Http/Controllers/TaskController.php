@@ -67,9 +67,9 @@ class TaskController extends Controller
     {
         $user = Auth::user();
         
-        // Only Coach or Management can create tasks
-        if (!$user->isCoach() && !$user->isManagement()) {
-            return back()->with('error', 'Hanya Pelatih atau Manajer yang dapat membuat tugas.');
+        // Only Coach can create tasks
+        if (!$user->isCoach()) {
+            return back()->with('error', 'Hanya Pelatih yang dapat membuat tugas.');
         }
 
         $request->validate([
@@ -299,8 +299,8 @@ class TaskController extends Controller
     public function destroy($id)
     {
         $user = Auth::user();
-        if (!$user->isCoach() && !$user->isManagement()) {
-            return back()->with('error', 'Hanya Pelatih atau Manajer yang dapat menghapus tugas.');
+        if (!$user->isCoach()) {
+            return back()->with('error', 'Hanya Pelatih yang dapat menghapus tugas.');
         }
 
         $task = Task::where('team_id', $user->team_id)->findOrFail($id);

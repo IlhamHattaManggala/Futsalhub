@@ -34,6 +34,12 @@
                     <a href="#fitur" class="w-full sm:w-auto text-center px-8 py-4 rounded-xl bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 font-bold transition-all">
                         Pelajari Fitur
                     </a>
+                    
+                    <!-- PWA Install Button (Hidden by default, shown via JS if installable) -->
+                    <button id="pwa-install-btn" class="hidden w-full sm:w-auto px-8 py-4 rounded-xl bg-slate-900 hover:bg-slate-850 text-white border border-slate-800 font-bold transition-all flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i>
+                        <span>Install Aplikasi</span>
+                    </button>
                 </div>
             </div>
 

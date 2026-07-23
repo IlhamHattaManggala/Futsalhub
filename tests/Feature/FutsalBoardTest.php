@@ -554,6 +554,8 @@ class FutsalBoardTest extends TestCase
 
     public function test_manager_can_close_account()
     {
+        \Illuminate\Support\Facades\Mail::fake();
+
         $response = $this->actingAs($this->managerUser)
             ->post('/v1/manager-hendra/settings/profile/close');
 
@@ -583,7 +585,7 @@ class FutsalBoardTest extends TestCase
             'password' => 'password'
         ]);
         
-        $loginResponse->assertSessionHasErrors('email');
+        $loginResponse->assertSessionHas('error_locked');
     }
 
     public function test_locked_user_is_logged_out_by_middleware()

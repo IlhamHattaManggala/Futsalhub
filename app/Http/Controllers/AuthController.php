@@ -10,6 +10,7 @@ use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use App\Mail\ReactivateAccountMail;
 
 class AuthController extends Controller
 {
@@ -34,6 +35,22 @@ class AuthController extends Controller
                 Auth::logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
+                
+                if ($user->isManagement()) {
+                    // Generate secure signed reactivation URL
+                    $reactivateUrl = \Illuminate\Support\Facades\URL::signedRoute('account.reactivate', ['id' => $user->id]);
+
+                    // Send reactivation link to the manager's email
+                    try {
+                        Mail::to($user->email)->send(new \App\Mail\ReactivateAccountMail($user, $reactivateUrl));
+                    } catch (\Exception $e) {
+                        \Log::error('Gagal mengirim email reaktivasi otomatis saat login gagal: ' . $e->getMessage());
+                    }
+
+                    return back()->with('error_locked', 'Akun Anda telah ditutup atau dinonaktifkan. Link reaktivasi telah dikirim ke email Anda.')
+                        ->with('locked_email', $user->email);
+                }
+
                 return back()->withErrors([
                     'email' => 'Akun Anda telah dinonaktifkan atau ditutup. Silakan hubungi admin.',
                 ])->onlyInput('email');
@@ -221,5 +238,53 @@ class AuthController extends Controller
         DB::table('password_reset_tokens')->where('email', $request->email)->delete();
 
         return redirect()->route('login')->with('success', 'Kata sandi Anda berhasil disetel ulang! Silakan masuk.');
+    }
+
+    public function sendReactivationEmail(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+        ], [
+            'email.exists' => 'Alamat email tidak terdaftar dalam sistem.',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user->is_locked || !$user->isManagement()) {
+            return back()->with('error', 'Hanya akun Manager yang ditutup yang dapat meminta link reaktivasi.');
+        }
+
+        // Generate secure signed reactivation URL
+        $reactivateUrl = \Illuminate\Support\Facades\URL::signedRoute('account.reactivate', ['id' => $user->id]);
+
+        // Send reactivation link email
+        try {
+            Mail::to($user->email)->send(new \App\Mail\ReactivateAccountMail($user, $reactivateUrl));
+        } catch (\Exception $e) {
+            \Log::error('Gagal mengirim email reaktivasi manual: ' . $e->getMessage());
+            return back()->with('error', 'Gagal mengirim email reaktivasi. Silakan coba beberapa saat lagi.');
+        }
+
+        return back()->with('success', 'Link reaktivasi akun telah berhasil dikirim ke email Anda.');
+    }
+
+    public function reactivateAccount(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+
+        if (!$user->is_locked) {
+            return redirect()->route('login')->with('success', 'Akun Anda sudah aktif. Silakan masuk.');
+        }
+
+        // Unlock the manager
+        $user->is_locked = false;
+        $user->save();
+
+        // Unlock all team members
+        if ($user->isManagement() && $user->team_id) {
+            User::where('team_id', $user->team_id)->update(['is_locked' => false]);
+        }
+
+        return redirect()->route('login')->with('success', 'Akun Anda beserta seluruh anggota tim telah berhasil diaktifkan kembali. Silakan masuk.');
     }
 }

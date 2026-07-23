@@ -127,6 +127,36 @@
                         <p class="text-slate-500 text-sm mt-1">Silakan masuk untuk mengakses dasbor tim Anda</p>
                     </div>
 
+                    @if (session('error_locked'))
+                        <div class="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm shadow-sm">
+                            <div class="flex items-start gap-3">
+                                <div class="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center flex-shrink-0">
+                                    <i class="fa-solid fa-user-lock"></i>
+                                </div>
+                                <div class="space-y-1">
+                                    <h4 class="font-bold text-slate-900">{{ session('error_locked') }}</h4>
+                                    <p class="text-xs text-slate-600 leading-relaxed">
+                                        Akun ini ditutup oleh manager tim. Klik tombol di bawah untuk mendapatkan link reaktivasi aman ke email Anda guna memulihkan akun manager beserta seluruh roster tim.
+                                    </p>
+                                    <form action="{{ route('account.reactivate.send') }}" method="POST" class="pt-2">
+                                        @csrf
+                                        <input type="hidden" name="email" value="{{ session('locked_email') }}">
+                                        <button type="submit" 
+                                            class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-all active:scale-[0.98]">
+                                            <i class="fa-solid fa-paper-plane text-[9px]"></i> Kirim Link Reaktivasi
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if (session('error'))
+                        <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-650 text-sm font-semibold">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
                     @if ($errors->any())
                         <div class="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-600 text-sm">
                             <ul class="list-disc list-inside">

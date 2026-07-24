@@ -46,7 +46,7 @@ class DashboardController extends Controller
         $teamId = $user->team_id;
 
         // General stats
-        $totalPlayers = Player::where('team_id', $teamId)->count();
+        $totalPlayers = Player::where('team_id', $teamId)->onlyPlayers()->count();
         
         $income = Finance::where('team_id', $teamId)->where('type', 'Pemasukan')->sum('amount');
         $expense = Finance::where('team_id', $teamId)->where('type', 'Pengeluaran')->sum('amount');

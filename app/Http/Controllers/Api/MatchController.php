@@ -126,7 +126,7 @@ class MatchController extends Controller
             ], 400);
         }
 
-        $players = Player::where('team_id', $user->team_id)->orderBy('number', 'asc')->get();
+        $players = Player::where('team_id', $user->team_id)->onlyPlayers()->orderBy('number', 'asc')->get();
         $statistics = Statistic::where('match_id', $match->id)->get()->keyBy('player_id');
 
         return response()->json([

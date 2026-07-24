@@ -34,4 +34,9 @@ class Player extends Model
             ->withPivot('status', 'proof_image', 'completed_at', 'started_at', 'start_proof_image')
             ->withTimestamps();
     }
+
+    public function scopeOnlyPlayers($query)
+    {
+        return $query->whereNotIn('position', ['Manajer', 'Official', 'Pelatih Kepala', 'Asisten Pelatih']);
+    }
 }

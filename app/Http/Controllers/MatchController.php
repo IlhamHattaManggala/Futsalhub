@@ -91,7 +91,7 @@ class MatchController extends Controller
             return redirect()->route('matches.index')->with('error', 'Statistik hanya dapat diinput untuk pertandingan yang sudah Selesai.');
         }
 
-        $players = Player::where('team_id', $teamId)->orderBy('number', 'asc')->get();
+        $players = Player::where('team_id', $teamId)->onlyPlayers()->orderBy('number', 'asc')->get();
         
         // Get existing stats
         $statistics = Statistic::where('match_id', $match->id)->get()->keyBy('player_id');

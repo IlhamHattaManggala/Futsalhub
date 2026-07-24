@@ -120,7 +120,7 @@ class ScheduleController extends Controller
         }
 
         $schedule = Schedule::where('team_id', $user->team_id)->findOrFail($id);
-        $players = Player::where('team_id', $user->team_id)->orderBy('number', 'asc')->get();
+        $players = Player::where('team_id', $user->team_id)->onlyPlayers()->orderBy('number', 'asc')->get();
         $attendances = Attendance::where('schedule_id', $schedule->id)->get()->keyBy('player_id');
 
         return response()->json([

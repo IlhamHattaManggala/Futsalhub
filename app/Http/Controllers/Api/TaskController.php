@@ -130,7 +130,7 @@ class TaskController extends Controller
             ]);
 
             if ($request->assign_type === 'all') {
-                $playerIds = Player::where('team_id', $user->team_id)->pluck('id')->toArray();
+                $playerIds = Player::where('team_id', $user->team_id)->onlyPlayers()->pluck('id')->toArray();
             } else {
                 $playerIds = $request->players;
             }

@@ -26,6 +26,7 @@ class PlayerController extends Controller
         }
 
         $players = Player::where('team_id', $user->team_id)
+            ->onlyPlayers()
             ->orderBy('number', 'asc')
             ->get();
 

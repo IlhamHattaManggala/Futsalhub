@@ -215,7 +215,7 @@ class ScheduleController extends Controller
 
         $teamId = Auth::user()->team_id;
         $schedule = Schedule::where('team_id', $teamId)->findOrFail($id);
-        $players = Player::where('team_id', $teamId)->orderBy('number', 'asc')->get();
+        $players = Player::where('team_id', $teamId)->onlyPlayers()->orderBy('number', 'asc')->get();
 
         // Get existing attendances
         $attendances = Attendance::where('schedule_id', $schedule->id)->get()->keyBy('player_id');

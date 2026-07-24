@@ -56,7 +56,7 @@ class TaskController extends Controller
             }
 
             // List of all active players in this team for assigning tasks
-            $players = Player::where('team_id', $teamId)->orderBy('name', 'asc')->get();
+            $players = Player::where('team_id', $teamId)->onlyPlayers()->orderBy('name', 'asc')->get();
             $categories = TaskCategory::all();
 
             return view('tasks.index', compact('tasks', 'players', 'categories'));
@@ -99,7 +99,7 @@ class TaskController extends Controller
 
             // Assign players
             if ($request->assign_type === 'all') {
-                $playerIds = Player::where('team_id', $user->team_id)->pluck('id')->toArray();
+                $playerIds = Player::where('team_id', $user->team_id)->onlyPlayers()->pluck('id')->toArray();
             } else {
                 $playerIds = $request->players;
             }

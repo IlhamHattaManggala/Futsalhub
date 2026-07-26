@@ -70,9 +70,27 @@
                     'border' => 'border-rose-100',
                     'text' => 'text-rose-600'
                 ],
+                [
+                    'key' => 'feat7',
+                    'default_icon' => 'fa-list-check',
+                    'default_title' => 'Pemantauan Tugas Latihan',
+                    'default_desc' => 'Pelatih dapat memberikan pekerjaan rumah latihan mandiri. Pemain mengunggah foto bukti mulai dan selesai latihan secara real-time via kamera HP untuk divalidasi.',
+                    'bg' => 'bg-sky-50',
+                    'border' => 'border-sky-100',
+                    'text' => 'text-sky-600'
+                ],
+                [
+                    'key' => 'feat8',
+                    'default_icon' => 'fa-bell',
+                    'default_title' => 'Notifikasi Push & PWA',
+                    'default_desc' => 'Dapat diinstal langsung ke layar HP sebagai Web App. Mengirimkan notifikasi push real-time untuk jadwal latihan baru, tugas mandiri baru, atau pengumuman penting.',
+                    'bg' => 'bg-fuchsia-50',
+                    'border' => 'border-fuchsia-100',
+                    'text' => 'text-fuchsia-600'
+                ],
             ];
         @endphp
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($features as $f)
                 @php
                     $icon = \App\Models\Setting::get($f['key'] . '_icon', $f['default_icon']);

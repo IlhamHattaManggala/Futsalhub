@@ -52,6 +52,10 @@
                             <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>
                             <span>Pembukuan Kas Keuangan (Maksimal 10 Transaksi)</span>
                         </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-5 h-5 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>
+                            <span>Pemantauan Tugas Latihan Pemain</span>
+                        </li>
                         <li class="flex items-center gap-3 text-slate-400">
                             <div class="w-5 h-5 rounded-full bg-slate-50 text-slate-300 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-xmark"></i></div>
                             <span>Papan Taktik Interaktif</span>
@@ -118,6 +122,10 @@
                         <li class="flex items-center gap-3">
                             <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>
                             <span>Pembukuan Kas Keuangan Tim</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>
+                            <span class="font-semibold text-slate-800">Tugas Latihan Mandiri (Tanpa Batas)</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>

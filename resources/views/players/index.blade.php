@@ -26,6 +26,7 @@
                             <th class="py-4 px-6 text-center w-20">No.</th>
                             <th class="py-4 px-6">Nama Pemain</th>
                             <th class="py-4 px-6">Posisi</th>
+                            <th class="py-4 px-6 text-center">Status Akun</th>
                             <th class="py-4 px-6 text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -66,12 +67,27 @@
                                             'Flank' => 'bg-emerald-50 text-emerald-700 border-emerald-100',
                                             'Pivot' => 'bg-purple-50 text-purple-700 border-purple-100',
                                             'Goalkeeper' => 'bg-amber-50 text-amber-700 border-amber-100',
+                                            'Keeper' => 'bg-amber-50 text-amber-700 border-amber-100',
                                         ];
                                         $posColor = $posColors[$p->position] ?? 'bg-slate-50 text-slate-600 border-slate-200';
                                     @endphp
                                     <span class="px-2.5 py-1 rounded-lg border text-xs font-bold {{ $posColor }}">
                                         {{ $p->position }}
                                     </span>
+                                </td>
+
+                                <!-- Status Akun -->
+                                <td class="py-4 px-6 text-center">
+                                    @if($p->user)
+                                        <form action="{{ route('players.toggle-status', $p->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <button type="submit" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 {{ !$p->user->is_locked ? 'bg-emerald-500' : 'bg-slate-200' }}" title="{{ !$p->user->is_locked ? 'Nonaktifkan Akun' : 'Aktifkan Akun' }}">
+                                                <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ !$p->user->is_locked ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <span class="text-xs text-slate-400 font-normal italic">Tanpa Akun</span>
+                                    @endif
                                 </td>
 
                                 <!-- Actions -->
@@ -95,7 +111,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="py-12 text-center text-slate-400 text-sm font-medium">
+                                <td colspan="5" class="py-12 text-center text-slate-400 text-sm font-medium">
                                     <i class="fa-solid fa-user-xmark text-4xl mb-3 block text-slate-300"></i>
                                     Belum ada pemain terdaftar.
                                 </td>

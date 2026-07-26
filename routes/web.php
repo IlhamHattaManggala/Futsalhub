@@ -187,10 +187,12 @@ Route::middleware(['auth', 'tenant'])->prefix('v1/{slug}')->group(function () {
         Route::get('/players', [PlayerController::class, 'index'])->name('players.index');
         Route::post('/players', [PlayerController::class, 'store'])->name('players.store');
         Route::delete('/players/{id}', [PlayerController::class, 'destroy'])->name('players.destroy');
+        Route::post('/players/{id}/toggle-status', [PlayerController::class, 'toggleStatus'])->name('players.toggle-status');
 
         Route::get('/coaches', [\App\Http\Controllers\CoachController::class, 'index'])->name('coaches.index');
         Route::post('/coaches', [\App\Http\Controllers\CoachController::class, 'store'])->name('coaches.store');
         Route::delete('/coaches/{id}', [\App\Http\Controllers\CoachController::class, 'destroy'])->name('coaches.destroy');
+        Route::post('/coaches/{id}/toggle-status', [\App\Http\Controllers\CoachController::class, 'toggleStatus'])->name('coaches.toggle-status');
 
         // QRIS Tim
         Route::post('/finances/qris', [FinanceController::class, 'updateQris'])->name('finances.qris.update');

@@ -65,4 +65,25 @@ class CoachController extends Controller
 
         return back()->with('success', 'Pelatih berhasil dihapus.');
     }
+
+    public function toggleStatus($id)
+    {
+        $teamId = Auth::user()->team_id;
+        $coachRole = Role::where('name', 'coach')->firstOrFail();
+        
+        $coach = User::where('team_id', $teamId)
+            ->where('role_id', $coachRole->id)
+            ->findOrFail($id);
+
+        // Prevent locking oneself
+        if ($coach->id === Auth::id()) {
+            return back()->with('error', 'Anda tidak dapat menonaktifkan akun Anda sendiri!');
+        }
+
+        $coach->is_locked = !$coach->is_locked;
+        $coach->save();
+
+        $statusStr = $coach->is_locked ? 'dinonaktifkan' : 'diaktifkan';
+        return back()->with('success', 'Akun pelatih "' . $coach->name . '" berhasil ' . $statusStr . '.');
+    }
 }

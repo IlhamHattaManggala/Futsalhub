@@ -4,17 +4,18 @@
 @section('header_title', 'Dasbor Analitik Tim')
 
 @section('content')
-<!-- Stats Widget Row -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+<!-- Stats Widget Rows -->
+<!-- Row 1: 3 Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
     <!-- Balance Card -->
     <div class="card-white p-5 rounded-2xl flex items-center justify-between card-white-hover transition-all">
-        <div class="space-y-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Total Kas Tim</span>
-            <h3 class="text-2xl font-extrabold text-slate-900 leading-tight">
+        <div class="space-y-1 min-w-0">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block truncate">Total Kas Tim</span>
+            <h3 class="text-xl xl:text-2xl font-extrabold text-slate-900 leading-tight truncate" title="Rp {{ number_format($balance, 0, ',', '.') }}">
                 Rp {{ number_format($balance, 0, ',', '.') }}
             </h3>
-            <div class="text-[10px] text-emerald-600 font-bold">
-                <i class="fa-solid fa-trend-up"></i> Saldo Kas Aktif
+            <div class="text-[10px] text-emerald-600 font-bold flex items-center gap-1 truncate">
+                <i class="fa-solid fa-circle-check text-[9px]"></i> Saldo Kas Aktif
             </div>
         </div>
         <div class="w-11 h-11 rounded-xl bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-lg shadow-sm shrink-0">
@@ -22,45 +23,70 @@
         </div>
     </div>
 
-    <!-- Players Card -->
+    <!-- Income Card -->
     <div class="card-white p-5 rounded-2xl flex items-center justify-between card-white-hover transition-all">
-        <div class="space-y-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pemain Skuad</span>
-            <h3 class="text-2xl font-extrabold text-slate-900 leading-tight">
-                {{ $totalPlayers }} <span class="text-xs font-semibold text-slate-400">Atlet</span>
+        <div class="space-y-1 min-w-0">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block truncate">Total Pemasukan</span>
+            <h3 class="text-xl xl:text-2xl font-extrabold text-slate-900 leading-tight truncate" title="Rp {{ number_format($income, 0, ',', '.') }}">
+                Rp {{ number_format($income, 0, ',', '.') }}
             </h3>
-            <div class="text-[10px] text-slate-500">
-                Terdaftar kompetisi aktif
+            <div class="text-[10px] text-blue-600 font-bold flex items-center gap-1 truncate">
+                <i class="fa-solid fa-circle-arrow-down text-[9px]"></i> Uang Masuk
             </div>
         </div>
         <div class="w-11 h-11 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 text-lg shadow-sm shrink-0">
+            <i class="fa-solid fa-circle-arrow-down"></i>
+        </div>
+    </div>
+
+    <!-- Expense Card -->
+    <div class="card-white p-5 rounded-2xl flex items-center justify-between card-white-hover transition-all">
+        <div class="space-y-1 min-w-0">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block truncate">Total Pengeluaran</span>
+            <h3 class="text-xl xl:text-2xl font-extrabold text-slate-900 leading-tight truncate" title="Rp {{ number_format($expense, 0, ',', '.') }}">
+                Rp {{ number_format($expense, 0, ',', '.') }}
+            </h3>
+            <div class="text-[10px] text-rose-600 font-bold flex items-center gap-1 truncate">
+                <i class="fa-solid fa-circle-arrow-up text-[9px]"></i> Uang Keluar
+            </div>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-rose-50 border border-rose-100 flex items-center justify-center text-rose-600 text-lg shadow-sm shrink-0">
+            <i class="fa-solid fa-circle-arrow-up"></i>
+        </div>
+    </div>
+</div>
+
+<!-- Row 2: 2 Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-6">
+    <!-- Players Card -->
+    <div class="card-white p-5 rounded-2xl flex items-center justify-between card-white-hover transition-all">
+        <div class="space-y-1 min-w-0">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block truncate">Total Pemain</span>
+            <h3 class="text-xl xl:text-2xl font-extrabold text-slate-900 leading-tight truncate">
+                {{ $totalPlayers }} <span class="text-xs font-semibold text-slate-400">Atlet</span>
+            </h3>
+            <div class="text-[10px] text-slate-500 block truncate">
+                Terdaftar Skuad
+            </div>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 text-lg shadow-sm shrink-0">
             <i class="fa-solid fa-user-group"></i>
         </div>
     </div>
 
-    <!-- Active Tactics Card -->
+    <!-- Coaches Card -->
     <div class="card-white p-5 rounded-2xl flex items-center justify-between card-white-hover transition-all">
-        <div class="space-y-1">
-            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Strategi Tim</span>
-            <h3 class="text-lg font-extrabold text-slate-900 leading-tight">
-                @if(count($tactics) > 0)
-                    Taktik Aktif
-                @else
-                    Belum Dibuat
-                @endif
+        <div class="space-y-1 min-w-0">
+            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-500 block truncate">Total Pelatih</span>
+            <h3 class="text-xl xl:text-2xl font-extrabold text-slate-900 leading-tight truncate">
+                {{ $totalCoaches }} <span class="text-xs font-semibold text-slate-400">Staf</span>
             </h3>
-            @if(Auth::user()->isCoach())
-                <a href="{{ route('tactics.index') }}" class="text-[10px] text-emerald-600 font-bold hover:text-emerald-700 transition-colors flex items-center gap-0.5">
-                    <span>Buka Board</span> <i class="fa-solid fa-arrow-right text-[8px]"></i>
-                </a>
-            @else
-                <div class="text-[10px] text-slate-450 font-bold mt-1">
-                    <i class="fa-solid fa-lock text-[8px] mr-1 text-slate-400"></i> Khusus Pelatih
-                </div>
-            @endif
+            <div class="text-[10px] text-slate-500 block truncate">
+                Pengelola Tim
+            </div>
         </div>
-        <div class="w-11 h-11 rounded-xl bg-yellow-50 border border-yellow-100 flex items-center justify-center text-yellow-600 text-lg shadow-sm shrink-0">
-            <i class="fa-solid fa-compass-drafting"></i>
+        <div class="w-11 h-11 rounded-xl bg-amber-50 border border-amber-100 flex items-center justify-center text-amber-600 text-lg shadow-sm shrink-0">
+            <i class="fa-solid fa-user-tie"></i>
         </div>
     </div>
 </div>
@@ -129,9 +155,21 @@
 
 <!-- Leaderboard & Bulletins Row -->
 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-    <!-- Top Scorers & Assists Leaderboards -->
     <div class="lg:col-span-8 card-white p-5 rounded-2xl">
-        <h3 class="text-sm font-extrabold text-slate-900 mb-4"><i class="fa-solid fa-award text-yellow-500 mr-2"></i>Statistik Performa Pemain (Top Stats)</h3>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 border-b border-slate-100 pb-3">
+            <h3 class="text-sm font-extrabold text-slate-900 flex items-center">
+                <i class="fa-solid fa-award text-yellow-500 mr-2 text-base"></i>Statistik Performa Pemain (Top Stats)
+            </h3>
+            <form action="" method="GET" id="topFilterForm" onsubmit="return false;">
+                <select name="top_filter" id="topFilterSelect"
+                    class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-xs text-slate-700 font-bold focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 transition-all cursor-pointer">
+                    <option value="all" {{ $topFilter === 'all' ? 'selected' : '' }}>Semua Waktu</option>
+                    <option value="week" {{ $topFilter === 'week' ? 'selected' : '' }}>Mingguan</option>
+                    <option value="month" {{ $topFilter === 'month' ? 'selected' : '' }}>Bulanan</option>
+                    <option value="year" {{ $topFilter === 'year' ? 'selected' : '' }}>Tahunan</option>
+                </select>
+            </form>
+        </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
             <!-- Top Scorer Table -->
@@ -140,7 +178,7 @@
                     <i class="fa-solid fa-fire text-orange-500"></i>
                     <span>Top Score</span>
                 </h4>
-                <div class="space-y-2">
+                <div class="space-y-2" id="topScorersList">
                     @forelse($topScorers as $idx => $ts)
                         <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100">
                             <div class="flex items-center gap-2.5 min-w-0">
@@ -168,7 +206,7 @@
                     <i class="fa-solid fa-handshake text-blue-500"></i>
                     <span>Top Assist</span>
                 </h4>
-                <div class="space-y-2">
+                <div class="space-y-2" id="topAssistsList">
                     @forelse($topAssists as $idx => $ta)
                         <div class="flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100">
                             <div class="flex items-center gap-2.5 min-w-0">
@@ -317,5 +355,91 @@
         });
     });
     @endif
+    
+    document.addEventListener("DOMContentLoaded", function() {
+        const topFilterSelect = document.getElementById('topFilterSelect');
+        if (topFilterSelect) {
+            topFilterSelect.addEventListener('change', function() {
+                const val = this.value;
+                const scorersList = document.getElementById('topScorersList');
+                const assistsList = document.getElementById('topAssistsList');
+
+                // Loading state
+                scorersList.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs font-semibold"><i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Memuat...</div>';
+                assistsList.innerHTML = '<div class="text-center py-8 text-slate-400 text-xs font-semibold"><i class="fa-solid fa-spinner fa-spin mr-1.5"></i>Memuat...</div>';
+
+                const url = new URL(window.location.href);
+                url.searchParams.set('top_filter', val);
+
+                fetch(url, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                    if (data.success) {
+                        // Render Scorers
+                        scorersList.innerHTML = '';
+                        if (data.topScorers.length === 0) {
+                            scorersList.innerHTML = '<div class="text-slate-400 text-[10px] font-semibold py-4 text-center">Belum ada statistik gol.</div>';
+                        } else {
+                            data.topScorers.forEach(function(ts, idx) {
+                                const row = document.createElement('div');
+                                row.className = 'flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100';
+                                row.innerHTML = 
+                                    '<div class="flex items-center gap-2.5 min-w-0">' +
+                                        '<span class="w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 shadow-sm">' +
+                                            (idx + 1) +
+                                        '</span>' +
+                                        '<div class="min-w-0">' +
+                                            '<div class="text-xs font-bold text-slate-800 truncate">' + ts.name + '</div>' +
+                                            '<div class="text-[9px] text-slate-555 mt-0.5">Jersey No.' + ts.number + ' | ' + ts.position + '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<span class="px-2.5 py-0.5 rounded-lg bg-emerald-50 border border-emerald-100 text-emerald-700 font-extrabold text-xs shrink-0">' +
+                                        ts.total_goals + ' Gol' +
+                                    '</span>';
+                                scorersList.appendChild(row);
+                            });
+                        }
+
+                        // Render Assists
+                        assistsList.innerHTML = '';
+                        if (data.topAssists.length === 0) {
+                            assistsList.innerHTML = '<div class="text-slate-400 text-[10px] font-semibold py-4 text-center">Belum ada statistik assist.</div>';
+                        } else {
+                            data.topAssists.forEach(function(ta, idx) {
+                                const row = document.createElement('div');
+                                row.className = 'flex items-center justify-between p-2.5 bg-slate-50 rounded-xl border border-slate-100';
+                                row.innerHTML = 
+                                    '<div class="flex items-center gap-2.5 min-w-0">' +
+                                        '<span class="w-5 h-5 rounded-full bg-white border border-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600 shrink-0 shadow-sm">' +
+                                            (idx + 1) +
+                                        '</span>' +
+                                        '<div class="min-w-0">' +
+                                            '<div class="text-xs font-bold text-slate-800 truncate">' + ta.name + '</div>' +
+                                            '<div class="text-[9px] text-slate-555 mt-0.5">Jersey No.' + ta.number + ' | ' + ta.position + '</div>' +
+                                        '</div>' +
+                                    '</div>' +
+                                    '<span class="px-2.5 py-0.5 rounded-lg bg-teal-50 border border-teal-100 text-teal-700 font-extrabold text-xs shrink-0">' +
+                                        ta.total_assists + ' Assist' +
+                                    '</span>';
+                                assistsList.appendChild(row);
+                            });
+                        }
+
+                        // Update current URL parameter without reload
+                        window.history.pushState({}, '', url);
+                    }
+                })
+                .catch(function(err) {
+                    console.error('Error loading top stats:', err);
+                    scorersList.innerHTML = '<div class="text-slate-400 text-[10px] font-semibold py-4 text-center text-rose-500">Gagal memuat.</div>';
+                    assistsList.innerHTML = '<div class="text-slate-400 text-[10px] font-semibold py-4 text-center text-rose-500">Gagal memuat.</div>';
+                });
+            });
+        }
+    });
 </script>
 @endsection

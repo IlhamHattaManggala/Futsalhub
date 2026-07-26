@@ -17,7 +17,8 @@ class PlayerController extends Controller
     public function index()
     {
         $teamId = Auth::user()->team_id;
-        $players = Player::where('team_id', $teamId)
+        $players = Player::with('user')
+            ->where('team_id', $teamId)
             ->onlyPlayers()
             ->orderBy('number', 'asc')
             ->get();
@@ -182,5 +183,22 @@ class PlayerController extends Controller
             'unpaidDuesCount',
             'radarStats'
         ));
+    }
+
+    public function toggleStatus($id)
+    {
+        $teamId = Auth::user()->team_id;
+        $player = Player::where('team_id', $teamId)->findOrFail($id);
+
+        if (!$player->user) {
+            return back()->with('error', 'Pemain ini tidak memiliki akun untuk diaktifkan/nonaktifkan.');
+        }
+
+        $user = $player->user;
+        $user->is_locked = !$user->is_locked;
+        $user->save();
+
+        $statusStr = $user->is_locked ? 'dinonaktifkan' : 'diaktifkan';
+        return back()->with('success', 'Akun pemain "' . $player->name . '" berhasil ' . $statusStr . '.');
     }
 }

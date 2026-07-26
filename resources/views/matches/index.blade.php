@@ -84,6 +84,19 @@
                                 <span><i class="fa-regular fa-calendar text-emerald-600 mr-1"></i> {{ $m->date->isoFormat('D MMM YYYY') }}</span>
                                 <span><i class="fa-solid fa-location-dot text-emerald-600 mr-1"></i> {{ $m->location }}</span>
                             </div>
+                            @if($isFinished && ($m->possession_team !== null || $m->shoot_on_target_team !== null))
+                                <div class="flex flex-wrap items-center gap-3 mt-2 bg-slate-550/5 border border-slate-100 rounded-lg px-2.5 py-1 text-[10px] text-slate-500 font-bold w-fit">
+                                    @if($m->possession_team !== null)
+                                        <span>Possession: <strong class="text-slate-850">{{ $m->possession_team }}% vs {{ $m->possession_opponent }}%</strong></span>
+                                    @endif
+                                    @if($m->shoot_on_target_team !== null)
+                                        <span class="before:content-['•'] before:mr-1.5 before:text-slate-300">Shots On Target: <strong class="text-slate-850">{{ $m->shoot_on_target_team }} vs {{ $m->shoot_on_target_opponent }}</strong></span>
+                                    @endif
+                                    @if($m->shoot_off_target_team !== null)
+                                        <span class="before:content-['•'] before:mr-1.5 before:text-slate-300">Shots Off Target: <strong class="text-slate-850">{{ $m->shoot_off_target_team }} vs {{ $m->shoot_off_target_opponent }}</strong></span>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     </div>
 

@@ -28,6 +28,7 @@
                             <th class="py-4 px-6">Alamat Email</th>
                             <th class="py-4 px-6">Peran</th>
                             @if(Auth::user()->isManagement())
+                                <th class="py-4 px-6 text-center">Status Akun</th>
                                 <th class="py-4 px-6 text-center">Aksi</th>
                             @endif
                         </tr>
@@ -57,13 +58,25 @@
                                     </span>
                                 </td>
 
+                                <!-- Status Akun -->
+                                @if(Auth::user()->isManagement())
+                                    <td class="py-4 px-6 text-center">
+                                        <form action="{{ route('coaches.toggle-status', $c->id) }}" method="POST" class="inline-block">
+                                            @csrf
+                                            <button type="submit" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 {{ !$c->is_locked ? 'bg-emerald-500' : 'bg-slate-200' }}" title="{{ !$c->is_locked ? 'Nonaktifkan Akun' : 'Aktifkan Akun' }}">
+                                                <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ !$c->is_locked ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                                            </button>
+                                        </form>
+                                    </td>
+                                @endif
+
                                 <!-- Action -->
                                 @if(Auth::user()->isManagement())
                                     <td class="py-4 px-6 text-center">
                                         <form action="{{ route('coaches.destroy', $c->id) }}" method="POST" class="confirm-delete" data-message="Apakah Anda yakin ingin menghapus akun pelatih ini? Aksi ini tidak dapat dibatalkan.">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-2 bg-red-50 border border-red-100 hover:border-red-200 hover:bg-red-100 text-red-650 rounded-xl transition-all" title="Hapus Pelatih">
+                                            <button type="submit" class="p-2 bg-red-50 border border-red-100 hover:border-red-200 hover:bg-red-100 text-red-655 rounded-xl transition-all" title="Hapus Pelatih">
                                                 <i class="fa-solid fa-trash-can text-sm"></i>
                                             </button>
                                         </form>
@@ -72,7 +85,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="py-12 text-center text-slate-400 text-sm font-medium">
+                                <td colspan="{{ Auth::user()->isManagement() ? 6 : 4 }}" class="py-12 text-center text-slate-400 text-sm font-medium">
                                     <i class="fa-solid fa-user-tie-slash text-4xl mb-3 block text-slate-300"></i>
                                     Belum ada pelatih terdaftar.
                                 </td>

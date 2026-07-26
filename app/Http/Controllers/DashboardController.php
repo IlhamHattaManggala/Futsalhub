@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Hash;
 
 class DashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
         $team = $user->team;
@@ -48,6 +48,11 @@ class DashboardController extends Controller
         // General stats
         $totalPlayers = Player::where('team_id', $teamId)->onlyPlayers()->count();
         
+        $coachRole = \App\Models\Role::where('name', 'coach')->first();
+        $totalCoaches = $coachRole 
+            ? \App\Models\User::where('team_id', $teamId)->where('role_id', $coachRole->id)->count()
+            : 0;
+
         $income = Finance::where('team_id', $teamId)->where('type', 'Pemasukan')->sum('amount');
         $expense = Finance::where('team_id', $teamId)->where('type', 'Pengeluaran')->sum('amount');
         $balance = $income - $expense;
@@ -72,10 +77,37 @@ class DashboardController extends Controller
             ->get();
 
         // Leaderboards (Top Scorers & Top Assists)
-        // Aggregating from matches statistic
-        $topScorers = DB::table('statistics')
+        // Aggregating from matches statistic with time filters
+        $topFilter = $request->query('top_filter', 'all'); // 'week', 'month', 'year', 'all'
+
+        $scorerQuery = DB::table('statistics')
             ->join('players', 'statistics.player_id', '=', 'players.id')
-            ->where('players.team_id', $teamId)
+            ->join('matches', 'statistics.match_id', '=', 'matches.id')
+            ->where('players.team_id', $teamId);
+
+        $assistQuery = DB::table('statistics')
+            ->join('players', 'statistics.player_id', '=', 'players.id')
+            ->join('matches', 'statistics.match_id', '=', 'matches.id')
+            ->where('players.team_id', $teamId);
+
+        if ($topFilter === 'week') {
+            $startOfWeek = now()->startOfWeek();
+            $endOfWeek = now()->endOfWeek();
+            $scorerQuery->whereBetween('matches.date', [$startOfWeek, $endOfWeek]);
+            $assistQuery->whereBetween('matches.date', [$startOfWeek, $endOfWeek]);
+        } elseif ($topFilter === 'month') {
+            $startOfMonth = now()->startOfMonth();
+            $endOfMonth = now()->endOfMonth();
+            $scorerQuery->whereBetween('matches.date', [$startOfMonth, $endOfMonth]);
+            $assistQuery->whereBetween('matches.date', [$startOfMonth, $endOfMonth]);
+        } elseif ($topFilter === 'year') {
+            $startOfYear = now()->startOfYear();
+            $endOfYear = now()->endOfYear();
+            $scorerQuery->whereBetween('matches.date', [$startOfYear, $endOfYear]);
+            $assistQuery->whereBetween('matches.date', [$startOfYear, $endOfYear]);
+        }
+
+        $topScorers = $scorerQuery
             ->select('players.name', 'players.number', 'players.position', DB::raw('SUM(statistics.goals) as total_goals'))
             ->groupBy('players.id', 'players.name', 'players.number', 'players.position')
             ->having('total_goals', '>', 0)
@@ -83,9 +115,7 @@ class DashboardController extends Controller
             ->take(5)
             ->get();
 
-        $topAssists = DB::table('statistics')
-            ->join('players', 'statistics.player_id', '=', 'players.id')
-            ->where('players.team_id', $teamId)
+        $topAssists = $assistQuery
             ->select('players.name', 'players.number', 'players.position', DB::raw('SUM(statistics.assists) as total_assists'))
             ->groupBy('players.id', 'players.name', 'players.number', 'players.position')
             ->having('total_assists', '>', 0)
@@ -109,15 +139,27 @@ class DashboardController extends Controller
             ->take(6)
             ->get();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'topScorers' => $topScorers,
+                'topAssists' => $topAssists,
+            ]);
+        }
+
         return view('dashboard.index', compact(
             'totalPlayers',
+            'totalCoaches',
+            'income',
+            'expense',
             'balance',
             'upcomingSchedules',
             'announcements',
             'tactics',
             'topScorers',
             'topAssists',
-            'monthlyFinance'
+            'monthlyFinance',
+            'topFilter'
         ));
     }
 

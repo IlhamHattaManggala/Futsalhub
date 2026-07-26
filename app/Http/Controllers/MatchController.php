@@ -114,12 +114,32 @@ class MatchController extends Controller
         $match = MatchGame::where('team_id', $teamId)->findOrFail($id);
 
         $request->validate([
+            'possession_team' => 'nullable|integer|min:0|max:100',
+            'possession_opponent' => 'nullable|integer|min:0|max:100',
+            'shoot_on_target_team' => 'nullable|integer|min:0',
+            'shoot_on_target_opponent' => 'nullable|integer|min:0',
+            'shoot_off_target_team' => 'nullable|integer|min:0',
+            'shoot_off_target_opponent' => 'nullable|integer|min:0',
             'stats' => 'required|array',
             'stats.*.goals' => 'required|integer|min:0',
             'stats.*.assists' => 'required|integer|min:0',
             'stats.*.yellow_cards' => 'required|integer|min:0|max:2',
             'stats.*.red_cards' => 'required|integer|min:0|max:1',
             'stats.*.minutes_played' => 'required|integer|min:0|max:100',
+            'stats.*.clearance' => 'nullable|integer|min:0',
+            'stats.*.save' => 'nullable|integer|min:0',
+            'stats.*.shoot_on_target' => 'nullable|integer|min:0',
+            'stats.*.shoot_off_target' => 'nullable|integer|min:0',
+        ]);
+
+        // Update team stats
+        $match->update([
+            'possession_team' => $request->possession_team,
+            'possession_opponent' => $request->possession_opponent,
+            'shoot_on_target_team' => $request->shoot_on_target_team,
+            'shoot_on_target_opponent' => $request->shoot_on_target_opponent,
+            'shoot_off_target_team' => $request->shoot_off_target_team,
+            'shoot_off_target_opponent' => $request->shoot_off_target_opponent,
         ]);
 
         foreach ($request->stats as $playerId => $data) {
@@ -134,6 +154,10 @@ class MatchController extends Controller
                     'yellow_cards' => $data['yellow_cards'],
                     'red_cards' => $data['red_cards'],
                     'minutes_played' => $data['minutes_played'],
+                    'clearance' => $data['clearance'] ?? 0,
+                    'save' => $data['save'] ?? 0,
+                    'shoot_on_target' => $data['shoot_on_target'] ?? 0,
+                    'shoot_off_target' => $data['shoot_off_target'] ?? 0,
                 ]
             );
         }

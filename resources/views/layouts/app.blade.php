@@ -148,7 +148,7 @@
 
     <!-- Sidebar Layout -->
     <aside id="sidebar"
-        class="sidebar-white w-60 flex-col fixed lg:sticky top-0 bottom-0 left-0 z-40 flex h-screen transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:flex">
+        class="sidebar-white w-60 flex-col fixed lg:sticky top-0 bottom-0 left-0 z-40 flex h-screen max-lg:h-[100dvh] max-lg:overflow-hidden transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out lg:flex">
         <!-- Logo -->
         <div
             class="h-16 md:h-20 px-4 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-slate-50/50 to-white shrink-0">
@@ -224,7 +224,7 @@
         </div>
 
         <!-- Navigation Links -->
-        <nav class="flex-1 px-3 space-y-4 overflow-y-auto pt-2">
+        <nav class="flex-1 px-3 space-y-4 overflow-y-auto pt-2 max-lg:pb-36">
             @if(Auth::user()->isSuperAdmin())
                 <div class="space-y-1">
                     <span class="text-[8px] font-black text-slate-400 uppercase tracking-widest px-3 block mb-1">Menu
@@ -441,7 +441,7 @@
         </nav>
 
         <!-- Bottom Fixed Area (Services & Logout) -->
-        <div class="p-3 border-t border-slate-100 space-y-2.5 bg-gradient-to-b from-white to-slate-50/50 shrink-0">
+        <div class="p-3 border-t border-slate-100 space-y-2.5 bg-gradient-to-b from-white to-slate-50/50 shrink-0 max-lg:absolute max-lg:bottom-0 max-lg:left-0 max-lg:right-0 max-lg:bg-white max-lg:z-10">
             @if(Auth::user()->isManagement())
                 <div class="space-y-1">
                     <a href="{{ route('subscription.upgrade') }}"

@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -12,9 +12,9 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use NotificationChannels\WebPush\HasPushSubscriptions;
 
-#[Fillable(['name', 'email', 'password', 'team_id', 'role_id', 'slug', 'avatar', 'google_id', 'is_locked'])]
+#[Fillable(['name', 'email', 'password', 'team_id', 'role_id', 'slug', 'avatar', 'google_id', 'is_locked', 'email_verified_at'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable, HasPushSubscriptions;
@@ -24,6 +24,10 @@ class User extends Authenticatable
         parent::boot();
 
         static::creating(function ($user) {
+            if (app()->environment('testing') && !array_key_exists('email_verified_at', $user->getAttributes())) {
+                $user->email_verified_at = now();
+            }
+
             if (empty($user->slug)) {
                 if ($user->role_id) {
                     $role = \App\Models\Role::find($user->role_id);

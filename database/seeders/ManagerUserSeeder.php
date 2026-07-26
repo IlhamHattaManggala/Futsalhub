@@ -36,6 +36,7 @@ class ManagerUserSeeder extends Seeder
                         'password' => Hash::make('password'),
                         'role_id' => $managementRole->id,
                         'team_id' => $team->id,
+                        'email_verified_at' => now(),
                     ]
                 );
 

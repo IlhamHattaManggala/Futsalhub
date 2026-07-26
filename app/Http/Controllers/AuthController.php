@@ -117,10 +117,13 @@ class AuthController extends Controller
 
             DB::commit();
 
+            // Dispatch Registered event to trigger email verification notification
+            event(new \Illuminate\Auth\Events\Registered($user));
+
             // Log the user in
             Auth::login($user);
             $request->session()->regenerate();
-            session()->flash('register_success_popup', 'Pendaftaran tim futsal "' . $team->name . '" berhasil! Selamat bergabung.');
+            session()->flash('register_success_popup', 'Pendaftaran tim futsal "' . $team->name . '" berhasil! Silakan periksa email Anda untuk verifikasi.');
 
             return $this->redirectUser();
         } catch (\Exception $e) {

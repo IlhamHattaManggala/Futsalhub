@@ -109,6 +109,25 @@ Route::post('/forgot-password', [AuthController::class, 'sendResetLinkEmail'])->
 Route::get('/reset-password/{token}', [AuthController::class, 'showResetForm'])->name('password.reset');
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
+// Email Verification Routes
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (\Illuminate\Foundation\Auth\EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    $user = Auth::user();
+    $slug = $user->isSuperAdmin() ? 'superadmin' : ($user->slug ?? 'user');
+    return redirect()->route('dashboard', ['slug' => $slug])->with('success', 'Email Anda berhasil diverifikasi!');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (\Illuminate\Http\Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Link verifikasi baru telah dikirim ke alamat email Anda.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
 // Account Reactivation Routes
 Route::post('/account/reactivate/send', [AuthController::class, 'sendReactivationEmail'])->name('account.reactivate.send');
 Route::get('/account/reactivate/{id}', [AuthController::class, 'reactivateAccount'])->name('account.reactivate')->middleware('signed');
@@ -156,7 +175,7 @@ Route::middleware(['auth', 'role:superadmin'])->prefix('v1/superadmin')->group(f
 });
 
 // Multi-Tenant Team Area
-Route::middleware(['auth', 'tenant'])->prefix('v1/{slug}')->group(function () {
+Route::middleware(['auth', 'verified', 'tenant'])->prefix('v1/{slug}')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Tactical Board (Only Coach & No CRUD)

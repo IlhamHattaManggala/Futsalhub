@@ -35,6 +35,7 @@ class CoachUserSeeder extends Seeder
                         'password' => Hash::make('password'),
                         'role_id' => $coachRole->id,
                         'team_id' => $team->id,
+                        'email_verified_at' => now(),
                     ]
                 );
 

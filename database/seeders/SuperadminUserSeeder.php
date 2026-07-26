@@ -24,6 +24,7 @@ class SuperadminUserSeeder extends Seeder
                     'password' => Hash::make('password'),
                     'role_id' => $superadminRole->id,
                     'team_id' => null,
+                    'email_verified_at' => now(),
                 ]
             );
         }

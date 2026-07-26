@@ -51,5 +51,52 @@ class ManagerUserSeeder extends Seeder
                 );
             }
         }
+
+        // Seed the new school managers
+        if ($managementRole) {
+            $schoolManagers = [
+                [
+                    'team_name' => 'SMK N 1 Adiwerna',
+                    'name' => 'Manager SMK N 1 Adiwerna',
+                    'email' => 'manager@smkn1adiwerna.ac.id',
+                ],
+                [
+                    'team_name' => 'SMA N 6 Kota Tegal',
+                    'name' => 'Manager SMA N 6 Kota Tegal',
+                    'email' => 'manager@sman6tegal.ac.id',
+                ],
+                [
+                    'team_name' => 'SMP 3 Pangkah',
+                    'name' => 'Manager SMP 3 Pangkah',
+                    'email' => 'manager@smp3pangkah.ac.id',
+                ],
+            ];
+
+            foreach ($schoolManagers as $sm) {
+                $t = Team::where('name', $sm['team_name'])->first();
+                if ($t) {
+                    $user = User::updateOrCreate(
+                        ['email' => $sm['email']],
+                        [
+                            'name' => $sm['name'],
+                            'password' => Hash::make('password'),
+                            'role_id' => $managementRole->id,
+                            'team_id' => $t->id,
+                            'email_verified_at' => now(),
+                        ]
+                    );
+
+                    Player::updateOrCreate(
+                        ['user_id' => $user->id],
+                        [
+                            'team_id' => $t->id,
+                            'name' => $sm['name'],
+                            'number' => 1,
+                            'position' => 'Manajer',
+                        ]
+                    );
+                }
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\SuperadminController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\PushSubscriptionController;
+use App\Http\Controllers\SitemapController;
 
 
 // Route::get('/debug-ini', function() {
@@ -28,6 +29,8 @@ Route::get('/', function () {
     $landingStats = app(\App\Http\Controllers\SuperadminController::class)->getLandingApi()->getData(true);
     return view('welcome', compact('landingStats'));
 })->name('landing');
+
+Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 
 Route::get('/manifest.json', function () {
     $logo = \App\Models\Setting::get('web_logo', 'images/logo.png');

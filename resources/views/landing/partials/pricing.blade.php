@@ -129,7 +129,7 @@
                         </li>
                         <li class="flex items-center gap-3">
                             <div class="w-5 h-5 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs shrink-0"><i class="fa-solid fa-check"></i></div>
-                            <span class="font-semibold text-slate-800">Prioritas Dukungan Teknis 24/7</span>
+                            <span class="font-semibold text-slate-800">Prioritas Dukungan Teknis pada Jam Operasional</span>
                         </li>
                     </ul>
                 </div>

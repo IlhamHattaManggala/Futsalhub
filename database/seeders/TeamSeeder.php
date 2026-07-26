@@ -21,14 +21,7 @@ class TeamSeeder extends Seeder
             ]
         );
 
-        Team::updateOrCreate(
-            ['name' => 'Galaxy Futsal'],
-            [
-                'logo' => null,
-                'description' => 'Klub futsal penantang dengan rotasi taktik cepat.',
-                'plan' => 'free'
-            ]
-        );
+
 
         Team::updateOrCreate(
             ['name' => 'SMK N 1 Adiwerna'],

@@ -62,6 +62,11 @@
             background: #ffffff;
             border: 1px solid rgba(226, 232, 240, 0.8);
         }
+        @media (display-mode: standalone) {
+            .pwa-hide {
+                display: none !important;
+            }
+        }
     </style>
     
     <!-- PWA Configuration -->
@@ -84,7 +89,7 @@
 <body class="bg-slate-50 font-sans">
     <div class="min-h-screen w-full flex items-center justify-center p-4 relative overflow-x-hidden bg-slate-50">
         <!-- Back to Landing Page Button -->
-        <div class="absolute top-6 left-6 z-20">
+        <div class="absolute top-4 left-4 md:top-6 md:left-6 z-20 pwa-hide">
             <a href="{{ route('landing') }}" class="inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 hover:text-slate-900 rounded-xl text-xs font-bold transition-all shadow-sm">
                 <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
             </a>
@@ -96,7 +101,7 @@
 
         <div class="w-full max-w-5xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center relative z-10">
             <!-- Left Side: App Branding & Intro -->
-            <div class="md:col-span-6 text-slate-800 space-y-6 text-center md:text-left px-4">
+            <div class="md:col-span-6 text-slate-800 space-y-6 text-center md:text-left px-4 pt-16 md:pt-0">
                 <div class="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-700 text-xs font-semibold tracking-wider uppercase">
                     <img src="{{ asset(\App\Models\Setting::get('web_logo', 'images/logo.png')) }}" class="w-5 h-5 object-contain rounded" alt="Logo">
                     <span>{{ \App\Models\Setting::get('web_name', 'FutsalHub') }}</span>

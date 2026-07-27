@@ -114,6 +114,10 @@ Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('
 
 // Email Verification Routes
 Route::get('/email/verify', function () {
+    if (Auth::user()->hasVerifiedEmail()) {
+        $slug = Auth::user()->isSuperAdmin() ? 'superadmin' : (Auth::user()->slug ?? 'user');
+        return redirect()->route('dashboard', ['slug' => $slug]);
+    }
     return view('auth.verify-email');
 })->middleware('auth')->name('verification.notice');
 
